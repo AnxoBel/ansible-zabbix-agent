@@ -97,6 +97,19 @@
     - config
     - include
 
+- name: "Configure userparameters for zabbix-agent"
+  template: src=userparameters.conf.j2
+            dest={{ agent_include }}/userparameters.conf
+            owner=root
+            group=root
+            mode=0644
+  notify: restart zabbix-agent
+  become: yes
+  tags:
+    - config
+    - include
+  when: agent_userparameters is defined
+
 - name: "Make sure the zabbix-agent service is running"
   service: name=zabbix-agent
            state=started
